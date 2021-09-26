@@ -7,7 +7,8 @@
     "test": "nodemon",
     "build": "rimraf ./build && tsc",
     "start": "npm run build && node build/index.js",
-    "run": "node build index.js"
+    "run": "node build index.js",
+    "migrate": "knex migrate:latest"
   },
   "keywords": [],
   "author": "",

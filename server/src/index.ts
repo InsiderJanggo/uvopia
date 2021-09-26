@@ -1,2 +1,3 @@
-"use strict";
-console.log('Hello world!');
+import Server from "./server";
+const server = new Server()
+server.start();
