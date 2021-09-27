@@ -1,4 +1,9 @@
 import express from 'express'
+import morgan from 'morgan';
+import cors from 'cors'
+import apiRoute from './routes/index'
+import session from 'express-session';
+import { errorHandler, notFound } from './middewares';
 
 class Server {
     private app: express.Application;
@@ -6,7 +11,21 @@ class Server {
 
     constructor() {
         this.app = express()
+        this.middlewares();
         this.rootPath()
+        this.routePaths()
+        this.app.use(notFound);
+        this.app.use(errorHandler)
+    }
+
+    private middlewares(): void {
+        this.app.use(cors())
+        this.app.use(morgan('tiny'))
+        this.app.use(session({
+            secret: process.env.SESSION_SECRET || 'keyboard cat',
+            resave: false,
+            saveUninitialized: true,
+        }))
     }
 
     protected rootPath(): void {
@@ -15,6 +34,10 @@ class Server {
                 message: 'Hello World'
             })
         })
+    }
+
+    protected routePaths(): void {
+        this.app.use('/api/v1', apiRoute)
     }
 
     public start(): void {
