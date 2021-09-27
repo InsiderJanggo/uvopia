@@ -6,13 +6,14 @@ import { LoginSchema, RegisterSchema } from "../schema/auth.schema";
 const saltRounds = 15;
 
 export const Register = async(req: any, res: any, next: any) => {
-    let { username, email, password } = req.body;
+    let { username, email, password, avatar } = req.body;
 
     if(!username || !email || !password) {
         return RegisterSchema.validate({
             username,
             email, 
-            password
+            password,
+            avatar
         }).catch((err) => {
             next(err)
         })
@@ -24,7 +25,8 @@ export const Register = async(req: any, res: any, next: any) => {
            await knex(users).insert({
                username: username,
                email: email,
-               password: hash
+               password: hash,
+               avatar
            })
            .asCallback((err: any, result: any) => {
                if(err) return next(err)
