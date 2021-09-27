@@ -4,6 +4,9 @@ import * as dotenv from 'dotenv'
 dotenv.config()
 import CryptoJS from "crypto-js";
 import { LoginSchema, RegisterSchema } from "../schema/auth.schema";
+import e from "express";
+
+let key= CryptoJS.SHA256(process.env.SECRET_KEY as string)
 
 export interface User {
     username: string;
@@ -24,8 +27,8 @@ export const Register = async(req: any, res: any, next: any) => {
         })
     }
 
-    let encryptPass = await CryptoJS.SHA256(process.env.SECRET_KEY as string)
-    let hash = await CryptoJS.AES.encrypt(password, encryptPass)
+    
+    let hash = await CryptoJS.AES.encrypt(password, key)
     await knex(users).insert({
         username,
         email,
@@ -47,4 +50,18 @@ export const Login = async(req: any, res: any, next: any) => {
             next(err)
         })
     }
+
+    await knex(users).where({
+        username
+    })
+    .asCallback(async(err: any, result: any) => {
+        let pass = result.password;
+        let hash = await CryptoJS.AES.decrypt(pass, key)
+        if(!hash) {
+            return res.json({
+                message: 'Wrong Password'
+            })
+        } 
+        res.json(result)
+    })
 }
