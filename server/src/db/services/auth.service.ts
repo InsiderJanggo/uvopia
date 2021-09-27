@@ -1,18 +1,15 @@
 import { users } from "../constants/tableNames";
 import knex from "../knex";
-import * as dotenv from 'dotenv'
-dotenv.config()
-import CryptoJS from "crypto-js";
+import bcrypt from 'bcrypt'
 import { LoginSchema, RegisterSchema } from "../schema/auth.schema";
-import e from "express";
-
-let key= CryptoJS.SHA256(process.env.SECRET_KEY as string)
 
 export interface User {
     username: string;
     email?: string;
     password: string
 }
+
+const saltRounds = 15;
 
 export const Register = async(req: any, res: any, next: any) => {
     let { username, email, password }: User = req.body;
@@ -28,16 +25,19 @@ export const Register = async(req: any, res: any, next: any) => {
     }
 
     
-    let hash = await CryptoJS.AES.encrypt(password, key)
-    await knex(users).insert({
-        username,
-        email,
-        password: hash
-    })
-    .asCallback((err: any, result: any) => {
-        if(err) return next(err)
-        res.json(result)
-    })
+   await bcrypt.genSalt(saltRounds, (err, salts) => {
+       bcrypt.hash(password, salts, async(err, hash) => {
+           await knex(users).insert({
+               username,
+               email,
+               password: hash
+           })
+           .asCallback((err: any, result: any) => {
+               if(err) return next(err)
+               res.json(result)
+           })
+       })
+   })
 }
 
 export const Login = async(req: any, res: any, next: any) => {
@@ -55,13 +55,17 @@ export const Login = async(req: any, res: any, next: any) => {
         username
     })
     .asCallback(async(err: any, result: any) => {
+        if(err) return res.json(result)
         let pass = result.password;
-        let hash = await CryptoJS.AES.decrypt(pass, key)
-        if(!hash) {
-            return res.json({
-                message: 'Wrong Password'
-            })
-        } 
-        res.json(result)
+        bcrypt.compare(password, pass, (err, response) => {
+            if(err) return next(err);
+            if(response) {
+                return res.json(result)
+            } else {
+                return res.json({
+                    message: 'Wrong Password or Username'
+                })
+            }
+        })
     })
 }
