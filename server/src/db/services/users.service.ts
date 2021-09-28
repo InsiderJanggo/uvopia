@@ -37,12 +37,12 @@ export const getOneUser = async(req: any, res: any, next: any) => {
     .asCallback((err: any, result: any) => {
         if(err) return next(err);
         let user = {
-            id: result.id,
-            user_id: result.user_id,
-            username: result.username,
-            email: result.email,
-            avatar: result.avatar,
-            created_at: result.created_at
+            id: result[0].id,
+            user_id: result[0].user_id,
+            username: result[0].username,
+            email: result[0].email,
+            avatar: result[0].avatar,
+            created_at: result[0].created_at
         }
         res.json(user)
     })
