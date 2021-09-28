@@ -1,6 +1,10 @@
 import React from "react"
-import { Container, Nav, Navbar } from "react-bootstrap"
+import { Container, Nav, Navbar, Button } from "react-bootstrap"
 import 'bootstrap/dist/css/bootstrap.min.css'
+
+interface User {
+    user: any
+}
 
 const Header = () => {
     return (
@@ -12,6 +16,15 @@ const Header = () => {
                 <Nav className="me-auto">
                     <Nav.Link href="/">Home</Nav.Link>
                 </Nav>
+                </Navbar.Collapse>
+                <Navbar.Collapse className="justify-content-end">
+                    <Navbar.Text>
+                                <Button 
+                                variant="primary" 
+                                onClick={() => window.location.href = "/login"}
+                                >Login
+                                </Button>
+                    </Navbar.Text>
                 </Navbar.Collapse>
             </Container>
         </Navbar>

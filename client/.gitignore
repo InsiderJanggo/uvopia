@@ -4,4 +4,4 @@ dist
 dist-ssr
 *.local
 package-lock.json
-run.sh
+run.bat

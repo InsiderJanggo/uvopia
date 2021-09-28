@@ -6,6 +6,7 @@ import {
 } from "react-bootstrap";
 import useForm from "../hooks/useForm";
 import 'bootstrap/dist/css/bootstrap.min.css'
+import authService from "../services/auth.service";
 
 const LoginForm = () => {
     const [data, setData] = useForm({
@@ -21,20 +22,19 @@ const LoginForm = () => {
     const validation = () => {
         if(!data.username || !data.password) {
             setError({
-                ...error,
                 isError: true,
                 usernameError: 'Username field cant be empty',
                 passwordError: 'Password field cant be empty'
             })
             return false
-        } else if(!data.username) {
+        } else if(!data.username || data.password) {
             setError({
                 ...error,
                 isError: true,
                 usernameError: 'Username field cant be empty'
             })
             return false
-        } else if(!data.password) {
+        } else if(!data.password || data.username) {
             setError({
                 ...error,
                 isError: true,
@@ -50,7 +50,15 @@ const LoginForm = () => {
         e.preventDefault();
         const isValid = validation();
         if(isValid) {
-            console.log(e.target.value)
+            authService.login({
+                username: data.username,
+                password: data.password
+            }).then((res) => {
+                
+            })
+            .catch((err) => {
+                console.error(err)
+            })
         }
     }
 
@@ -80,7 +88,7 @@ const LoginForm = () => {
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                     {error.passwordError ? (
                             <Alert variant="danger">
-                                    {error.usernameError}
+                                    {error.passwordError}
                             </Alert>
                     ): (
                         ""
