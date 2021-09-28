@@ -10,7 +10,6 @@ router.get('/', (req, res) => {
     }
 })
 
-
 router.post('/login', Login)
 router.post('/register', Register)
 
