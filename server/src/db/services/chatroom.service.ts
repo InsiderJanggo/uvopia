@@ -24,7 +24,9 @@ export const getOne = async(req: any, res: any, next: any) => {
     let { id } = req.params;
     if(id) return next()
 
-    await knex(chatroom).where({ room_id: id })
+    await knex(chatroom)
+    .where({ room_id: id })
+    .first()
     .asCallback(async(err: any, result: any) => {
         if(err) return next(err)
 
@@ -37,8 +39,16 @@ export const getOne = async(req: any, res: any, next: any) => {
            return next(err)
         })
 
+        let roomdata = {
+            id: result[0].id,
+            room_id: result[0].room_id,
+            title: result[0].title,
+            owner: result[0].owner,
+            created_at: result[0].created_at
+        }
+
         res.json({
-            room: result,
+            room: roomdata,
             owner: owner
         })
     })
@@ -62,6 +72,35 @@ export const createOne = async(req: any, res: any, next: any) => {
     })
 }
 
-export const deleteOne = async(req: any, res: any, next: any) => {
+export const updateOne = async(req: any, res: any, next: any) => {
+    let { id } = req.params;
+    if(!id) return next()
+    
+    let { title } = req.body;
 
+    if(!title) {
+        return next()
+    }
+
+    await knex(chatroom).where({ room_id: id }).first().update({ 
+        title
+    }).asCallback((err: any, result: any) => {
+        if(err) return next(err)
+
+       res.json(result)
+    })
+}
+
+export const deleteOne = async(req: any, res: any, next: any) => {
+    let { id } = req.params;
+    if(id) return next()
+
+    await knex(chatroom).where({ room_id: id })
+    .first()
+    .del()
+    .asCallback((err: any, result: any) => {
+        if(err) return next(err)
+
+       res.json(result)
+    })
 }
