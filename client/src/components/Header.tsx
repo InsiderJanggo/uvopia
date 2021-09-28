@@ -1,12 +1,13 @@
-import React from "react"
+import {
+    useHistory
+} from 'react-router-dom'
 import { Container, Nav, Navbar, Button } from "react-bootstrap"
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-interface User {
-    user: any
-}
-
 const Header = () => {
+    const router = useHistory()
+    const userData= window.localStorage.getItem('user')
+    const user = JSON.parse(userData as any)
     return (
         <Navbar bg="dark" variant="dark" expand="lg">
             <Container>
@@ -15,15 +16,18 @@ const Header = () => {
                 <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto">
                     <Nav.Link href="/">Home</Nav.Link>
+                    <Nav.Link href="/room">Room</Nav.Link>
                 </Nav>
                 </Navbar.Collapse>
                 <Navbar.Collapse className="justify-content-end">
                     <Navbar.Text>
-                                <Button 
-                                variant="primary" 
-                                onClick={() => window.location.href = "/login"}
-                                >Login
-                                </Button>
+                    {user ? (
+                            <span>Welcome, {user.username}</span>
+                    ): (
+                        <Button variant="primary" onClick={() => window.location.href="/login"}>
+                                Login
+                        </Button>
+                    )}
                     </Navbar.Text>
                 </Navbar.Collapse>
             </Container>

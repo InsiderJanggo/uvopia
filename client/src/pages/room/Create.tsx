@@ -6,12 +6,13 @@ import {
 
 const Create = () => {
     const router = useHistory()
-    const user = window.localStorage.getItem('user')
+    const userData= window.localStorage.getItem('user')
+    const user = JSON.parse(userData as any)
 
     if(!user) {
-        return router.push('/login')
+        router.push('/login')
     }
-
+    
     return(
         <>
             <CreateForm />
