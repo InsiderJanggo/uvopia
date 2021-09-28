@@ -1,23 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import Header from "../../components/Header";
+import UserInterface from "../../interfaces/User";
+import { 
+    useEffect,
+    useState 
+} from "react";
+import UserList from "../../components/UserList";
 import usersService from "../../services/users.service";
 
-interface User {
-    user_id: any;
-    username: string;
-    email: string;
-    avatar: string;
-    created_at: Date;
-}
-
 const User = () => {
-    const {id}: any = useParams() 
-    const [user, setUser] = useState<User>()
+    const [users, setUsers] = useState([])
 
-    const getOne = (id: any) => {
-        usersService.getOne(id)
+    const getAll = () => {
+        usersService.getAll()
         .then((res) => {
-            setUser(res.data)
+            setUsers(res.data)
         })
         .catch((err) => {
             console.error(err)
@@ -25,18 +21,18 @@ const User = () => {
     }
 
     useEffect(() => {
-        getOne(id)
-        //SET THE PAGE TITLE ACCORDING TO USER STATE
-        document.title = `${user?.username} - Uvopia`
-    }, [user?.username])
+        getAll()
+        document.title = 'Users - Uvopia'
+    }, [])
 
     return(
         <>
-            <span>
-                {user?.username}
-            </span>
+            <Header />
+            {users.map((user: any) => (
+                <UserList key={user.user_id} user={user} />
+            ))}
         </>
     )
 }
 
-export default User;
+export default User

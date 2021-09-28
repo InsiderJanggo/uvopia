@@ -6,12 +6,16 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import User from './pages/user'
+import UserPage from './pages/user/[id]'
 
 const App = () => {
   return (
     <div className="App">
         <Switch>
-              <Route path="/user/:id">
+            <Route path="/user/:id">
+                  <UserPage />
+            </Route>
+            <Route path="/user">
                   <User />
             </Route>
             <Route path="/register">
