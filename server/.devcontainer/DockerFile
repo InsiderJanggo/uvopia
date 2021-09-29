@@ -1,0 +1,2 @@
+# run the application
+CMD ["nodemon"]
