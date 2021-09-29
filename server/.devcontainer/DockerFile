@@ -1,2 +1,10 @@
+FROM ubuntu:20.04
+
+# install Dependencies
+RUN npm install --save
+
+# UPDATE ALL THE Dependencies
+RUN npm update
+
 # run the application
 CMD ["nodemon"]
