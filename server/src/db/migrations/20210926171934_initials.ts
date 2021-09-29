@@ -6,8 +6,7 @@ import {v4 as uuid} from 'uuid'
 export async function up(knex: Knex): Promise<void> {
     await Promise.all([
         knex.schema.createTable(users, (table) => {
-            table.increments('id').primary();
-            table.uuid('user_id').defaultTo(uuid());
+            table.uuid('user_id').defaultTo(uuid()).primary();
             table.string('username').unique().notNullable();
             table.string('email', 155).notNullable();
             table.string('password').notNullable();
@@ -16,22 +15,20 @@ export async function up(knex: Knex): Promise<void> {
             table.date('updated_at').nullable()
         }),
         knex.schema.createTable(chatroom, (table) => {
-            table.increments('id').primary();
-            table.uuid('room_id').defaultTo(uuid()).unique();
+            table.uuid('room_id').defaultTo(uuid()).unique().primary();
             table.string('title').notNullable();
-            table.integer('owner')
-            .references('id')
+            table.uuid('owner')
+            .references('user_id')
             .inTable(users)
             .unsigned()
             .notNullable();
             table.timestamp('created_at').defaultTo(knex.fn.now()).notNullable()
         }),
         knex.schema.createTable(messages, (table) => {
-            table.increments('id').primary();
-            table.uuid('message_id').defaultTo(uuid()).unique();
+            table.uuid('message_id').defaultTo(uuid()).unique().primary();
             table.string('content').notNullable()
-            table.integer('at_chat')
-            .references('id')
+            table.uuid('at_chat')
+            .references('room_id')
             .inTable(chatroom)
             .unsigned()
             .notNullable()
