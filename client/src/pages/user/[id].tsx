@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { Container } from "react-bootstrap";
 import { useParams } from "react-router";
+import Header from "../../components/Header";
 import User from "../../interfaces/User";
 import usersService from "../../services/users.service";
 
@@ -27,7 +29,10 @@ const UserPage = () => {
 
     return(
         <>
-            
+            <Header />
+            <Container>
+                    
+            </Container>
         </>
     )
 }
