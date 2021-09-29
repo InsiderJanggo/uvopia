@@ -17,6 +17,19 @@ export const getAllMessage = async(req: any, res: any, next: any) => {
     })
 }
 
+export const getOneMessage = async(req: any, res: any, next: any) => {
+    let { id } = req.params;
+    if(id) return next()
+
+    await knex(messages)
+    .where({ message_id: id })
+    .first()
+    .asCallback((err: any, result: any) => {
+        if(err) return next(err)
+        res.json(result[0])
+    })
+}
+
 export const createMessage = async(req: any, res: any, next: any) => {
     let { id } = req.params;
     if(!id) return next();
