@@ -4,7 +4,6 @@ import roomSchema from "../schema/room.schema";
 import axios from "axios";
 
 export default interface Room {
-    id?: number;
     room_id: any;
     title: string;
     owner: number;

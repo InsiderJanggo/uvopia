@@ -2,7 +2,6 @@ import { users } from "../constants/tableNames";
 import knex from "../knex";
 
 interface User {
-    id: number;
     user_id: any;
     username: string;
     email: string;
