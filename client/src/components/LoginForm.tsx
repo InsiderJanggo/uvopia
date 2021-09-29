@@ -9,6 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import authService from "../services/auth.service";
 
 const LoginForm = () => {
+    const [loginStatus, setLoginStatus] = useState()
     const [data, setData] = useForm({
         username: '',
         password: ''
@@ -19,7 +20,7 @@ const LoginForm = () => {
         passwordError: ''
     })
 
-    const validation = () => {
+    const validation = () => { 
         if(!data.username || !data.password) {
             setError({
                 isError: true,
@@ -54,7 +55,13 @@ const LoginForm = () => {
                 username: data.username,
                 password: data.password
             }).then((res) => {
-                
+                if(res.data.message) {
+                    setLoginStatus(res.data.message)
+                } else {
+                    setLoginStatus(res.data)
+                    let data = JSON.stringify(res.data)
+                    window.localStorage.setItem('user', data)
+                }
             })
             .catch((err) => {
                 console.error(err)
