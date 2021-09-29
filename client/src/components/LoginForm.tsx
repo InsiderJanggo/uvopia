@@ -58,8 +58,8 @@ const LoginForm = () => {
                 if(res.data.message) {
                     setLoginStatus(res.data.message)
                 } else {
-                    setLoginStatus(res.data)
-                    let data = JSON.stringify(res.data)
+                    setLoginStatus(res.data[0])
+                    let data = JSON.stringify(res.data[0])
                     window.localStorage.setItem('user', data)
                 }
             })
