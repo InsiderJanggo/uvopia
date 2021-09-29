@@ -31,7 +31,14 @@ const UserPage = () => {
         <>
             <Header />
             <Container>
-                    
+                    <div id={user?.user_id + '-profile'}>
+                    <p id="kanjiOyaji" itemID={user?.user_id} className="txtColorRed">
+                        {user?.username}
+                    </p>
+                    <p id="imi" className="Chiyaji">
+                       Created At: {user?.created_at} 
+                    </p>
+                    </div>
             </Container>
         </>
     )
