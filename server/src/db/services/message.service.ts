@@ -17,3 +17,25 @@ export const getAllMessage = async(req: any, res: any, next: any) => {
     })
 }
 
+export const createMessage = async(req: any, res: any, next: any) => {
+    let { id } = req.params;
+    if(!id) return next();
+    let { content } = req.body;
+
+    if(!content) {
+        return messageSchema.validate({
+            content
+        }).catch((err) => {
+            next(err)
+        })
+    }
+
+    await knex(messages).insert({
+        content,
+        at_chat: id
+    })
+    .asCallback((err: any, result: any) => {
+        if(err) return next(err)
+        res.json(result)
+    });
+}
