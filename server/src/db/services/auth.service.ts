@@ -50,13 +50,14 @@ export const Login = async(req: any, res: any, next: any) => {
     await knex(users).where({
         username
     })
+    .first()
     .asCallback(async(err: any, result: any) => {
         if(err) return res.json(result)
-        let pass = result.password;
+        let pass = result[0].password;
         bcrypt.compare(password, pass, (err, response) => {
             if(err) return next(err);
             if(response) {
-                return res.json(result)
+                return res.json(result[0])
             } else {
                 return res.json({
                     message: 'Wrong Password or Username'
