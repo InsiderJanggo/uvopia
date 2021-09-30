@@ -44,8 +44,13 @@ const RegisterForm = () => {
                 email: data.email,
                 avatar: data.avatar,
                 password: data.password
+            }).then((res) => {
+                console.log(res.data)
             })
-        }
+            .catch((err) => {
+                console.error(err)
+            })
+        } 
     }
 
     return(

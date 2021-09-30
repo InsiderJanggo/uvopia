@@ -1,6 +1,7 @@
 import { users } from "../constants/tableNames";
 import knex from "../knex";
 import bcrypt from 'bcrypt'
+import getRandomAvatar from "../../utils/getRandomAvatar";
 import { LoginSchema, RegisterSchema } from "../schema/auth.schema";
 
 const saltRounds = 15;
@@ -17,6 +18,11 @@ export const Register = async(req: any, res: any, next: any) => {
         }).catch((err) => {
             next(err)
         })
+    }
+
+    //GENERATED AVATAR IF THE ITS EMPTY
+    if(!avatar) {
+        return getRandomAvatar(username as string, 'male' || 'female')
     }
 
     
