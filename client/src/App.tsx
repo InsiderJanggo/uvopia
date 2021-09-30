@@ -1,4 +1,3 @@
-import React from 'react'
 import { Route, Switch } from 'react-router'
 
 //PAGES
@@ -6,6 +5,7 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import Profile from './pages/Profile'
 import Register from './pages/Register'
+import Room from './pages/room'
 import Create from './pages/room/Create'
 import RoomPage from './pages/room/[id]'
 import User from './pages/user'
@@ -20,6 +20,9 @@ const App = () => {
             </Route>
             <Route path="/room/:id">
                   <RoomPage />
+            </Route>
+            <Route path="/room">
+                  <Room />
             </Route>
             <Route path="/user/:id">
                   <UserPage />
