@@ -23,7 +23,7 @@ const RegisterForm = () => {
     })
 
     const validation = () => { 
-        if(!data) {
+        if(!data.username || !data.password || !data.email || !data.avatar) {
             setError({
                 isError: true,
                 usernameError: 'Username field cant be empty',
