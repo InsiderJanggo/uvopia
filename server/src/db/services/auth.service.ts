@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt'
 import getRandomAvatar from "../../utils/getRandomAvatar";
 import { LoginSchema, RegisterSchema } from "../schema/auth.schema";
 
-const saltRounds = 15;
+const saltRounds: number = 15;
 
 export const Register = async(req: any, res: any, next: any) => {
     let { username, email, password, avatar } = req.body;
@@ -23,6 +23,12 @@ export const Register = async(req: any, res: any, next: any) => {
     //GENERATED AVATAR IF THE ITS EMPTY
     if(!avatar) {
         return getRandomAvatar(username as string, 'male' || 'female')
+        .then((response) => {
+            avatar = response.data
+        })
+        .catch((err) => {
+            next(err)
+        })
     }
 
     
