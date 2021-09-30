@@ -110,6 +110,10 @@ const LoginForm = () => {
                     />
                 </Form.Group>
 
+                <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                           <span>Dont have an account?  <a href="/register">Register Now</a></span>
+                </Form.Group>
+
                 <Button variant="primary" type="submit">
                     Login
                 </Button>
