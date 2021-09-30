@@ -7,6 +7,7 @@ import Login from './pages/Login'
 import Profile from './pages/Profile'
 import Register from './pages/Register'
 import Create from './pages/room/Create'
+import RoomPage from './pages/room/[id]'
 import User from './pages/user'
 import UserPage from './pages/user/[id]'
 
@@ -16,6 +17,9 @@ const App = () => {
         <Switch>
             <Route path="/room/create">
                   <Create />
+            </Route>
+            <Route path="/room/:id">
+                  <RoomPage />
             </Route>
             <Route path="/user/:id">
                   <UserPage />
