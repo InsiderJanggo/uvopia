@@ -54,3 +54,18 @@ export const createMessage = async(req: any, res: any, next: any) => {
         res.json(result)
     });
 }
+
+export const deleteOne = async(req: any, res: any, next: any) => {
+    let { id } = req.params;
+    if(!id) return next()
+
+    await knex(messages).where({
+        message_id: id
+    })
+    .first()
+    .del()
+    .asCallback((err: any, result: any) => {
+        if(err) return next(err)
+        res.json(result)
+    });
+}

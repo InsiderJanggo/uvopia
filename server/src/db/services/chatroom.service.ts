@@ -29,15 +29,6 @@ export const getOne = async(req: any, res: any, next: any) => {
     .asCallback(async(err: any, result: any) => {
         if(err) return next(err)
 
-        let owner = {}
-        await axios.get(`http://localhost:4000/api/v1/users/${result.owner}`)
-        .then((response) => {
-            response.data = owner;
-        })
-        .catch((err) => {
-           return next(err)
-        })
-
         let roomdata = {
             id: result[0].id,
             room_id: result[0].room_id,
@@ -47,8 +38,7 @@ export const getOne = async(req: any, res: any, next: any) => {
         }
 
         res.json({
-            room: roomdata,
-            owner: owner
+            room: roomdata
         })
     })
 }
