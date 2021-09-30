@@ -27,6 +27,11 @@ export async function up(knex: Knex): Promise<void> {
         knex.schema.createTable(messages, (table) => {
             table.uuid('message_id').defaultTo(uuid()).unique().primary();
             table.string('content').notNullable()
+            table.uuid('author')
+            .references('user_id')
+            .inTable(users)
+            .unsigned()
+            .notNullable()
             table.uuid('at_chat')
             .references('room_id')
             .inTable(chatroom)
