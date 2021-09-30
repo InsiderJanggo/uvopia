@@ -33,11 +33,12 @@ export const getOneMessage = async(req: any, res: any, next: any) => {
 export const createMessage = async(req: any, res: any, next: any) => {
     let { id } = req.params;
     if(!id) return next();
-    let { content } = req.body;
+    let { content, author } = req.body;
 
     if(!content) {
         return messageSchema.validate({
-            content
+            content,
+            author
         }).catch((err) => {
             next(err)
         })
@@ -45,7 +46,8 @@ export const createMessage = async(req: any, res: any, next: any) => {
 
     await knex(messages).insert({
         content,
-        at_chat: id
+        at_chat: id,
+        author
     })
     .asCallback((err: any, result: any) => {
         if(err) return next(err)
